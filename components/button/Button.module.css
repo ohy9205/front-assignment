@@ -1,0 +1,27 @@
+.button {
+  border-radius: 5px;
+}
+
+.primary {
+  background-color: powderblue;
+}
+
+.dangerous {
+  background-color: salmon;
+  color: white;
+}
+
+.sm {
+  font-size: 14px;
+  padding: 5px 10px;
+}
+
+.md {
+  font-size: inherit;
+  padding: 10px 15px;
+}
+
+.lg {
+  font-size: 18px;
+  padding: 13px 18px;
+}

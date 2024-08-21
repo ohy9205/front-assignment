@@ -10,7 +10,7 @@ type Size = "sm" | "md" | "lg";
 
 const Button = ({ text, theme = "primary", size = "md" }: Props) => {
   return (
-    <button className={`${styles.button} ${styles[theme]} ${styles[size]}}`}>
+    <button className={`${styles.button} ${styles[theme]} ${styles[size]}`}>
       {text}
     </button>
   );
