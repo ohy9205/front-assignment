@@ -22,3 +22,10 @@ button {
   background-color: transparent;
   border: none;
 }
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  height: 100vh;
+  background-color: pink;
+}
