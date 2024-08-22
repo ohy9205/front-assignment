@@ -10,7 +10,7 @@ const List = async () => {
   // await new Promise((resolve) => setTimeout(resolve, 3000));
   const data = await getList();
 
-  const createHandler = () => async (todo: TodoForm) => {
+  const createHandler = async (todo: TodoForm) => {
     "use server";
 
     const res = await createTodo(todo);
@@ -26,7 +26,7 @@ const List = async () => {
         <TodoDialog
           trigger={<MyButton text="create" />}
           header="Create todo"
-          submitHandler={createHandler()}
+          submitHandler={createHandler}
         />
       </div>
       <div className={styles.inner}>

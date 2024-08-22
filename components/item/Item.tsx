@@ -58,8 +58,9 @@ const Item = ({ item }: Props) => {
           <TodoDialog
             header="Update todo"
             trigger={<MyButton text="update" />}
-            initItem={item}
+            initItem={{ id: item.id, title: item.title, content: item.content }}
             submitHandler={editTodoHandler}
+            // cancleHandler={}
           />
           <MyAlertDialog
             trigger={<MyButton text="delete" theme="dangerous" />}

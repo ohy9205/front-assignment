@@ -8,6 +8,7 @@ type Props = {
   header: string;
   initItem?: TodoForm;
   submitHandler: (todo: TodoForm) => void;
+  cancleHandler?: () => void;
 };
 
 const initForm: TodoForm = { id: "", title: "", content: "" };
@@ -17,11 +18,26 @@ const TodoDialog = ({
   header,
   initItem = initForm,
   submitHandler,
+  cancleHandler,
 }: Props) => {
   const { id, title, content } = initItem;
 
-  const isValidated = async (todo: Pick<TodoForm, "title" | "content">) => {
+  const isModified = async (initItem: TodoForm, newItem: TodoForm) => {
     "use server";
+
+    if (JSON.stringify(initItem) === JSON.stringify(newItem)) {
+      return false;
+    }
+    return true;
+  };
+
+  const isValidated = async (todo: TodoForm) => {
+    "use server";
+
+    if (!(await isModified(initItem, todo))) {
+      console.log("변경된 내용이 없음");
+      return;
+    }
 
     if (!todo.title.trim()) {
       console.log("제목 빈 상태에서 추가할 수 없음");
@@ -83,7 +99,10 @@ const TodoDialog = ({
             <MyButton text="SUBMIT" size="full" />
           </form>
           <Dialog.Close asChild>
-            <button className="IconButton" aria-label="Close">
+            <button
+              className="IconButton"
+              aria-label="Close"
+              onClick={cancleHandler}>
               ✖️
             </button>
           </Dialog.Close>
