@@ -38,8 +38,8 @@ const Item = ({ item }: Props) => {
           </label>
         </div>
         <div className={styles.buttonWrapper}>
-          <MyButton text="update" clickHandler={() => {}} />
-          <MyButton text="delete" theme="dangerous" clickHandler={() => {}} />
+          <MyButton text="update" onClick={() => {}} />
+          <MyButton text="delete" theme="dangerous" onClick={() => {}} />
         </div>
       </header>
       <div className={styles.content}>{state.content}</div>
