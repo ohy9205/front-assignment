@@ -1,0 +1,41 @@
+.detail {
+  /* 제거 */
+  background-color: white;
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 22px 20px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  align-items: end;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.titleWrapper {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.buttonWrapper {
+  display: flex;
+  gap: 10px;
+}
+
+.article.completed {
+  background-color: #eee;
+}
+
+.article.completed .titleWrapper,
+.article.completed .content {
+  text-decoration: line-through;
+}
