@@ -1,4 +1,6 @@
-import { TodoItem } from "@/types/todoItem";
+"use server";
+
+import { TodoForm, TodoItem } from "@/types/todoItem";
 import { fetchWithErorHandler } from "@/utils/fetchWithErorHandle";
 
 const BASE_URL = "http://localhost:4000";
@@ -37,4 +39,29 @@ export const toggleCompletItem = async (item: TodoItem) => {
   });
 
   return result ? result : item;
+};
+
+export const createTodo = async (item: TodoForm) => {
+  console.log("createTodo호출");
+  const newItem: TodoItem = {
+    ...item,
+    id: new Date().getTime().toString(),
+    createdAt: new Date().getTime().toString(),
+    isCompleted: false,
+  };
+
+  const result = await fetchWithErorHandler<TodoItem>({
+    url: `${BASE_URL}/list`,
+    options: {
+      method: "POST",
+      body: JSON.stringify(newItem),
+    },
+    errorHandler: () => {
+      alert("생성에 실패했습니다. 다시 시도해주세요.");
+    },
+  });
+
+  console.log(result);
+
+  return result;
 };
