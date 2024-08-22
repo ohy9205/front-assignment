@@ -1,6 +1,16 @@
 .list {
   display: flex;
   flex-direction: column;
+}
+
+.create {
+  text-align: right;
+  padding: 20px 0;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
   gap: 20px;
   padding: 22px 20px;
   border: 2px solid #eee;
