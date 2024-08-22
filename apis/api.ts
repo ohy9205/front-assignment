@@ -23,3 +23,18 @@ export const getList = async () => {
 
   return errorMsg ? errorMsg : list;
 };
+
+export const toggleCompletItem = async (item: TodoItem) => {
+  const result = await fetchWithErorHandler<TodoItem>({
+    url: `${BASE_URL}/list/${item.id}`,
+    options: {
+      method: "PATCH",
+      body: JSON.stringify({ ...item, isCompleted: !item.isCompleted }),
+    },
+    errorHandler: () => {
+      alert("작업을 완료하지 못했습니다. 다시 시도해주세요.");
+    },
+  });
+
+  return result ? result : item;
+};
