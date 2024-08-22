@@ -1,5 +1,6 @@
 import { createTodo, getList } from "@/apis/api";
 import { TodoForm, TodoItem } from "@/types/todoItem";
+import { revalidatePath } from "next/cache";
 import Item from "../item/Item";
 import MyButton from "../myButton/MyButton";
 import TodoDialog from "../todoDialog/TodoDialog";
@@ -13,6 +14,10 @@ const List = async () => {
     "use server";
 
     const res = await createTodo(todo);
+    console.log(res);
+    if (res) {
+      revalidatePath("/list");
+    }
   };
 
   return (
@@ -27,7 +32,7 @@ const List = async () => {
       <div className={styles.inner}>
         {typeof data === "string"
           ? data
-          : data?.map((item: TodoItem) => <Item item={item} />)}
+          : data?.map((item: TodoItem) => <Item item={item} key={item.id} />)}
       </div>
     </div>
   );

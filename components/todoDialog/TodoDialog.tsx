@@ -1,6 +1,5 @@
 import { TodoForm } from "@/types/todoItem";
 import * as Dialog from "@radix-ui/react-dialog";
-import { revalidatePath } from "next/cache";
 import MyButton from "../myButton/MyButton";
 import styles from "./TodoDialog.module.css";
 
@@ -39,7 +38,6 @@ const TodoDialog = ({
 
   const submit = async (formData: FormData) => {
     "use server";
-    console.log(formData);
 
     const newData = {
       id: id ? id : new Date().getTime().toString(),
@@ -53,7 +51,6 @@ const TodoDialog = ({
     }
 
     submitHandler(newData);
-    revalidatePath("/list");
   };
 
   return (
