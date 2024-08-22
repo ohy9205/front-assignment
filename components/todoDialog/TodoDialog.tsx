@@ -42,7 +42,7 @@ const TodoDialog = ({
     console.log(formData);
 
     const newData = {
-      id: new Date().getTime().toString(),
+      id: id ? id : new Date().getTime().toString(),
       title: formData.get("title")?.toString() || "",
       content: formData.get("content")?.toString() || "",
     };

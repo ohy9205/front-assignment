@@ -1,10 +1,9 @@
-"use client";
-
-import { toggleCompletItem } from "@/apis/api";
-import { TodoItem } from "@/types/todoItem";
-import { useState } from "react";
+import { editTodo, toggleCompletItem } from "@/apis/api";
+import { TodoForm, TodoItem } from "@/types/todoItem";
+import { revalidatePath } from "next/cache";
 import Checkbox from "../checkbox/Checkbox";
 import MyButton from "../myButton/MyButton";
+import TodoDialog from "../todoDialog/TodoDialog";
 import styles from "./Item.module.css";
 
 type Props = {
@@ -12,37 +11,54 @@ type Props = {
 };
 
 const Item = ({ item }: Props) => {
-  const [state, setState] = useState(item);
+  console.log("item 컴포");
 
   const checkHandler = (item: TodoItem) => async () => {
+    "use server";
     const res = await toggleCompletItem(item);
-    setState(res);
+    revalidatePath(`/list:${item.id}`);
+  };
+
+  const editTodoHandler = async (todo: TodoForm) => {
+    "use server";
+    const res = await editTodo(todo);
   };
 
   return (
     <article
-      key={state.id}
+      key={item.id}
       className={[
         styles.article,
-        state.isCompleted ? styles.completed : "",
+        item.isCompleted ? styles.completed : "",
       ].join(" ")}>
       <header className={styles.header}>
         <div className={styles.titleWrapper}>
           <Checkbox
-            checked={state.isCompleted}
-            value={state.id}
-            checkHandler={checkHandler(state)}
+            checked={item.isCompleted}
+            value={item.id}
+            checkHandler={checkHandler(item)}
           />
-          <label className={styles.text} htmlFor={state.id}>
-            {state.title}
+          <label className={styles.text} htmlFor={item.id}>
+            {item.title}
           </label>
         </div>
         <div className={styles.buttonWrapper}>
-          <MyButton text="update" onClick={() => {}} />
-          <MyButton text="delete" theme="dangerous" onClick={() => {}} />
+          <TodoDialog
+            header="Update todo"
+            trigger={<MyButton text="update" />}
+            initItem={item}
+            submitHandler={editTodoHandler}
+          />
+          <MyButton
+            text="delete"
+            theme="dangerous"
+            onClick={async () => {
+              "use server";
+            }}
+          />
         </div>
       </header>
-      <div className={styles.content}>{state.content}</div>
+      <div className={styles.content}>{item.content}</div>
     </article>
   );
 };

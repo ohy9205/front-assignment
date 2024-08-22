@@ -1,5 +1,3 @@
-"use server";
-
 import { TodoForm, TodoItem } from "@/types/todoItem";
 import { fetchWithErorHandler } from "@/utils/fetchWithErorHandle";
 
@@ -31,7 +29,7 @@ export const toggleCompletItem = async (item: TodoItem) => {
     url: `${BASE_URL}/list/${item.id}`,
     options: {
       method: "PATCH",
-      body: JSON.stringify({ ...item, isCompleted: !item.isCompleted }),
+      body: JSON.stringify({ isCompleted: !item.isCompleted }),
     },
     errorHandler: () => {
       alert("작업을 완료하지 못했습니다. 다시 시도해주세요.");
@@ -42,7 +40,6 @@ export const toggleCompletItem = async (item: TodoItem) => {
 };
 
 export const createTodo = async (item: TodoForm) => {
-  console.log("createTodo호출");
   const newItem: TodoItem = {
     ...item,
     createdAt: new Date().getTime().toString(),
@@ -60,7 +57,20 @@ export const createTodo = async (item: TodoForm) => {
     },
   });
 
-  console.log(result);
+  return result;
+};
+
+export const editTodo = async (item: TodoForm) => {
+  const result = await fetchWithErorHandler<TodoItem>({
+    url: `${BASE_URL}/list/${item.id}`,
+    options: {
+      method: "PATCH",
+      body: JSON.stringify(item),
+    },
+    errorHandler: () => {
+      alert("수정에 실패했습니다. 다시 시도해주세요.");
+    },
+  });
 
   return result;
 };
