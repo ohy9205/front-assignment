@@ -4,13 +4,21 @@ type Props = {
   text: string;
   theme?: Theme;
   size?: Size;
+  clickHandler: () => void;
 };
 type Theme = "primary" | "dangerous";
 type Size = "sm" | "md" | "lg";
 
-const Button = ({ text, theme = "primary", size = "md" }: Props) => {
+const Button = ({
+  text,
+  clickHandler,
+  theme = "primary",
+  size = "md",
+}: Props) => {
   return (
-    <button className={`${styles.button} ${styles[theme]} ${styles[size]}`}>
+    <button
+      onClick={clickHandler}
+      className={[styles.button, styles[theme], styles[size]].join(" ")}>
       {text}
     </button>
   );
