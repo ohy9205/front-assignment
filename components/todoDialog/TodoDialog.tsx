@@ -1,5 +1,3 @@
-// "use client";
-
 import { TodoForm } from "@/types/todoItem";
 import * as Dialog from "@radix-ui/react-dialog";
 import { revalidatePath } from "next/cache";
