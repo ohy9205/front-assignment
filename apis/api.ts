@@ -88,3 +88,24 @@ export const deleteTodo = async (id: string) => {
 
   return result;
 };
+
+export const getTodo = async (id: string) => {
+  let errorMsg = "";
+
+  const setErrorMsg = () => {
+    errorMsg = "데이터를 불러오지 못했어요.";
+  };
+
+  const result = (await fetchWithErorHandler<TodoItem>({
+    url: `${BASE_URL}/list/${id}`,
+    errorHandler: () => {
+      alert("데이터를 불러오는데 실패했습니다. 다시 시도해주세요.");
+    },
+  })) as TodoItem;
+
+  if (!result) {
+    setErrorMsg();
+  }
+
+  return errorMsg ? errorMsg : result;
+};
