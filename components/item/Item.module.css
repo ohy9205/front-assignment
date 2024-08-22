@@ -28,4 +28,16 @@
 
 .content {
   padding-top: 20px;
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
+  overflow: hidden;
+}
+
+.article.completed {
+  background-color: #eee;
+}
+
+.article.completed > .header,
+.article.completed > .content {
+  text-decoration: line-through;
 }

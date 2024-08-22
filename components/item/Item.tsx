@@ -20,7 +20,12 @@ const Item = ({ item }: Props) => {
   };
 
   return (
-    <article key={state.id} className={styles.article}>
+    <article
+      key={state.id}
+      className={[
+        styles.article,
+        state.isCompleted ? styles.completed : "",
+      ].join(" ")}>
       <header className={styles.header}>
         <div className={styles.titleWrapper}>
           <Checkbox
