@@ -15,10 +15,10 @@ const Checkbox = ({ checked = false, value, checkHandler }: Props) => {
         type="checkbox"
         className={styles.input}
         id={value}
-        checked={checked}
-        onChange={checkHandler}
+        defaultChecked={checked}
+        onClick={() => checkHandler()}
       />
-      <span className={styles.span} onClick={checkHandler}></span>
+      <span className={styles.span} onClick={() => checkHandler()}></span>
     </>
   );
 };
