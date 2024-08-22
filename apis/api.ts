@@ -74,3 +74,17 @@ export const editTodo = async (item: TodoForm) => {
 
   return result;
 };
+
+export const deleteTodo = async (id: string) => {
+  const result = await fetchWithErorHandler<TodoItem>({
+    url: `${BASE_URL}/list/${id}`,
+    options: {
+      method: "DELETE",
+    },
+    errorHandler: () => {
+      alert("삭제에 실패했습니다. 다시 시도해주세요.");
+    },
+  });
+
+  return result;
+};
