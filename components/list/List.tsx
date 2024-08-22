@@ -32,7 +32,7 @@ const List = async () => {
       <div className={styles.inner}>
         {typeof data === "string"
           ? data
-          : data?.map((item: TodoItem) => <Item item={item} key={item.id} />)}
+          : data.map((item: TodoItem) => <Item item={item} key={item.id} />)}
       </div>
     </div>
   );

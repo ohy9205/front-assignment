@@ -31,11 +31,59 @@
   gap: 10px;
 }
 
-.article.completed {
+.completed {
   background-color: #eee;
 }
 
-.article.completed .titleWrapper,
-.article.completed .content {
+.completed .titleWrapper {
   text-decoration: line-through;
+}
+
+/* 수정모드 */
+
+.Fieldset {
+  all: unset;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.Input {
+  all: unset;
+  width: 100%;
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  padding: 0 10px;
+  height: 35px;
+  border: 2px solid #ddd;
+}
+.Input::placeholder {
+  color: #bbb;
+}
+.Input:focus {
+  border: 2px solid powderblue;
+}
+
+.textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 2px solid #ddd;
+  height: 140px;
+  resize: none;
+  font-size: 16px;
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.textarea::placeholder {
+  color: #bbb;
+}
+
+.buttonWrapper {
 }
