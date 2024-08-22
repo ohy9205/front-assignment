@@ -1,5 +1,6 @@
 import { TodoItem } from "@/types/todoItem";
 import Button from "../button/Button";
+import Checkbox from "../checkbox/Checkbox";
 import styles from "./List.module.css";
 
 type Props = {
@@ -17,8 +18,10 @@ const List = async ({ data }: Props) => {
             <article key={id} className={styles.article}>
               <header className={styles.header}>
                 <div className={styles.titleWrapper}>
-                  <input type="checkbox" />
-                  <h2 className={styles.text}>{title}</h2>
+                  <Checkbox
+                    value={id}
+                    label={<h2 className={styles.text}>{title}</h2>}
+                  />
                 </div>
                 <div className={styles.buttonWrapper}>
                   <Button text="update" />
