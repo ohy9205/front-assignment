@@ -1,6 +1,7 @@
 import { deleteTodo, editTodo, toggleCompletItem } from "@/apis/api";
 import { TodoForm, TodoItem } from "@/types/todoItem";
 import { revalidatePath } from "next/cache";
+import Link from "next/link";
 import Checkbox from "../checkbox/Checkbox";
 import MyAlertDialog from "../myAlertDialog/MyAlertDialog";
 import MyButton from "../myButton/MyButton";
@@ -67,7 +68,11 @@ const Item = ({ item }: Props) => {
           />
         </div>
       </header>
-      <div className={styles.content}>{item.content}</div>
+      <div>
+        <Link href={`/todo-list/${item.id}`} className={styles.content}>
+          {item.content}
+        </Link>
+      </div>
     </article>
   );
 };

@@ -27,17 +27,18 @@
 }
 
 .content {
-  padding-top: 20px;
+  padding: 30px 0;
   text-overflow: ellipsis;
   text-wrap: nowrap;
   overflow: hidden;
+  display: block;
 }
 
 .article.completed {
   background-color: #eee;
 }
 
-.article.completed > .header,
-.article.completed > .content {
+.article.completed .titleWrapper,
+.article.completed .content {
   text-decoration: line-through;
 }
