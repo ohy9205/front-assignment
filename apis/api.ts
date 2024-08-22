@@ -10,12 +10,12 @@ export const getList = async () => {
     errorMsg = "리스트를 불러오지 못했어요.";
   };
 
-  const list = await fetchWithErorHandler<TodoItem[]>({
+  const list = (await fetchWithErorHandler<TodoItem[]>({
     url: BASE_URL + "/list",
     errorHandler: () => {
       setErrorMsg();
     },
-  });
+  })) as TodoItem[];
 
   if (!list) {
     setErrorMsg();
