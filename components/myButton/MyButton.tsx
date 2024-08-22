@@ -1,15 +1,17 @@
-import styles from "./Button.module.css";
+"use client";
+
+import styles from "./MyButton.module.css";
 
 type Props = {
   text: string;
   theme?: Theme;
   size?: Size;
-  clickHandler: () => void;
+  clickHandler?: () => void;
 };
 type Theme = "primary" | "dangerous";
 type Size = "sm" | "md" | "lg";
 
-const Button = ({
+const MyButton = ({
   text,
   clickHandler,
   theme = "primary",
@@ -24,4 +26,4 @@ const Button = ({
   );
 };
 
-export default Button;
+export default MyButton;

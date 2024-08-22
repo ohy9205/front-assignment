@@ -3,8 +3,8 @@
 import { toggleCompletItem } from "@/apis/api";
 import { TodoItem } from "@/types/todoItem";
 import { useState } from "react";
-import Button from "../button/Button";
 import Checkbox from "../checkbox/Checkbox";
+import MyButton from "../myButton/MyButton";
 import styles from "./Item.module.css";
 
 type Props = {
@@ -38,8 +38,8 @@ const Item = ({ item }: Props) => {
           </label>
         </div>
         <div className={styles.buttonWrapper}>
-          <Button text="update" />
-          <Button text="delete" theme="dangerous" />
+          <MyButton text="update" clickHandler={() => {}} />
+          <MyButton text="delete" theme="dangerous" clickHandler={() => {}} />
         </div>
       </header>
       <div className={styles.content}>{state.content}</div>
