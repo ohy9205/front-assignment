@@ -1,7 +1,8 @@
-import { editTodo, toggleCompletItem } from "@/apis/api";
+import { deleteTodo, editTodo, toggleCompletItem } from "@/apis/api";
 import { TodoForm, TodoItem } from "@/types/todoItem";
 import { revalidatePath } from "next/cache";
 import Checkbox from "../checkbox/Checkbox";
+import MyAlertDialog from "../myAlertDialog/MyAlertDialog";
 import MyButton from "../myButton/MyButton";
 import TodoDialog from "../todoDialog/TodoDialog";
 import styles from "./Item.module.css";
@@ -11,22 +12,32 @@ type Props = {
 };
 
 const Item = ({ item }: Props) => {
-  console.log("item 컴포");
-
-  const checkHandler = (item: TodoItem) => async () => {
+  const checkHandler = async () => {
     "use server";
     const res = await toggleCompletItem(item);
-    revalidatePath(`/list:${item.id}`);
+    if (res) {
+      revalidatePath(`/list/${item.id}`);
+    }
   };
 
   const editTodoHandler = async (todo: TodoForm) => {
     "use server";
     const res = await editTodo(todo);
+    if (res) {
+      revalidatePath(`/list`);
+    }
+  };
+
+  const deleteTodoHandler = async () => {
+    "use server";
+    const res = await deleteTodo(item.id);
+    if (res) {
+      revalidatePath(`/list`);
+    }
   };
 
   return (
     <article
-      key={item.id}
       className={[
         styles.article,
         item.isCompleted ? styles.completed : "",
@@ -36,7 +47,7 @@ const Item = ({ item }: Props) => {
           <Checkbox
             checked={item.isCompleted}
             value={item.id}
-            checkHandler={checkHandler(item)}
+            checkHandler={checkHandler}
           />
           <label className={styles.text} htmlFor={item.id}>
             {item.title}
@@ -49,12 +60,10 @@ const Item = ({ item }: Props) => {
             initItem={item}
             submitHandler={editTodoHandler}
           />
-          <MyButton
-            text="delete"
-            theme="dangerous"
-            onClick={async () => {
-              "use server";
-            }}
+          <MyAlertDialog
+            trigger={<MyButton text="delete" theme="dangerous" />}
+            title="정말 삭제하시겠습니까?"
+            confirmHandler={deleteTodoHandler}
           />
         </div>
       </header>
