@@ -21,7 +21,8 @@
   padding: 10px 15px;
 }
 
-.lg {
-  font-size: 18px;
-  padding: 13px 18px;
+.full {
+  width: 100%;
+  font-size: inherit;
+  padding: 10px 15px;
 }
