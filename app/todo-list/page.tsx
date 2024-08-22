@@ -1,5 +1,7 @@
 import { getList } from "@/apis/api";
-import { TodoItem } from "@/types/todoItem";
+import List from "@/components/list/List";
+import LoadingSpinner from "@/components/loadingSpinner/LoadingSpinner";
+import { Suspense } from "react";
 import style from "./page.module.css";
 
 const TodoList = async () => {
@@ -7,13 +9,12 @@ const TodoList = async () => {
 
   return (
     <main className={style.main}>
-      {typeof res === "string"
-        ? res
-        : res?.map((item: TodoItem) => (
-            <article key={item.id}>
-              <h2>{item.title}</h2>
-            </article>
-          ))}
+      <h1 className="header">Todo List🗒️</h1>
+
+      <Suspense fallback={<LoadingSpinner type="data" />}>
+        <List data={res} />
+      </Suspense>
+      <div>다음</div>
     </main>
   );
 };
