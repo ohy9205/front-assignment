@@ -5,18 +5,20 @@ import styles from "./Checkbox.module.css";
 type Props = {
   value: string;
   checked?: boolean;
+  checkHandler: () => void;
 };
 
-const Checkbox = ({ checked = false, value }: Props) => {
+const Checkbox = ({ checked = false, value, checkHandler }: Props) => {
   return (
     <>
       <input
         type="checkbox"
         className={styles.input}
         id={value}
-        defaultChecked={checked}
+        checked={checked}
+        onChange={checkHandler}
       />
-      <span className={styles.span}></span>
+      <span className={styles.span} onClick={checkHandler}></span>
     </>
   );
 };
