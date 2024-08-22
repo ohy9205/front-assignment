@@ -1,0 +1,22 @@
+.checkbox {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.input {
+  display: none;
+}
+
+.span {
+  width: 22px;
+  height: 22px;
+  border-radius: 3px;
+  border: 1px solid #ddd;
+  background-color: white;
+}
+
+.input:checked + .span {
+  background-color: blue;
+}
