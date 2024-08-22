@@ -4,31 +4,37 @@
       "id": "1",
       "title": "test title 1",
       "content": "테스트용 내용 입니다. 테스트용 내용 입니다. 테스트용 내용 입니다. 테스트용 내용 입니다. 테스트용 내용 입니다. 테스트용 내용 입니다. 테스트용 내용 입니다. 테스트용 내용 입니다. 테스트용 내용 입니다. 테스트용 내용 입니다. 테스트용 내용 입니다. 테스트용 내용 입니다. 테스트용 내용 입니다. 테스트용 내용 입니다. 테스트용 내용 입니다. 테스트용 내용 입니다. 테스트용 내용 입니다. 테스트용 내용 입니다. 테스트용 내용 입니다. 테스트용 내용 입니다.",
-      "createdAt": "35345341"
+      "createdAt": "35345341",
+      "isCompleted": true,
+      "isChecked": true
     },
     {
       "id": "2",
       "title": "test title 2",
       "content": "테스트용 내용 입니다.",
-      "createdAt": "35345342"
+      "createdAt": "35345342",
+      "isCompleted": true
     },
     {
       "id": "3",
       "title": "test title 3",
       "content": "테스트용 내용 입니다.",
-      "createdAt": "35345343"
+      "createdAt": "35345343",
+      "isCompleted": false
     },
     {
       "id": "4",
       "title": "test title 4",
       "content": "테스트용 내용 입니다.",
-      "createdAt": "35345344"
+      "createdAt": "35345344",
+      "isCompleted": false
     },
     {
       "id": "5",
       "title": "test title 5",
       "content": "테스트용 내용 입니다.",
-      "createdAt": "35345345"
+      "createdAt": "35345345",
+      "isCompleted": false
     }
   ]
 }
