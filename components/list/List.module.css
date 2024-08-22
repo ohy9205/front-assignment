@@ -6,35 +6,3 @@
   border: 2px solid #eee;
   border-radius: 15px;
 }
-
-.article {
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 5px 5px 15px 0px rgba(70, 70, 70, 0.75);
-  background-color: white;
-}
-
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  align-items: end;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 10px;
-}
-
-.titleWrapper {
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.buttonWrapper {
-  display: flex;
-  gap: 10px;
-}
-
-.content {
-  padding-top: 20px;
-}
