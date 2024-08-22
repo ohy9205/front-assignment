@@ -11,7 +11,6 @@ const TodoList = async () => {
       <Suspense fallback={<LoadingSpinner type="data" />}>
         <List />
       </Suspense>
-      <div>다음</div>
     </main>
   );
 };

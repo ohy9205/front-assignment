@@ -1,5 +1,4 @@
 .main {
-  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -9,7 +8,7 @@
 .link {
   font-size: 32px;
   padding: 10px 20px;
-  background-color: white;
+  background-color: powderblue;
   border-radius: 65px;
   font-weight: 600;
 }
