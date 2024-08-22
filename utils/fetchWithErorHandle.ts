@@ -23,7 +23,7 @@ export const fetchWithErorHandler = async <T>({
 
     return await res.json();
   } catch (error) {
-    console.log(error);
+    console.error(error);
 
     errorHandler();
   }
