@@ -1,13 +1,34 @@
 {
-  "posts": [
-    { "id": "1", "title": "a title", "views": 100 },
-    { "id": "2", "title": "another title", "views": 200 }
-  ],
-  "comments": [
-    { "id": "1", "text": "a comment about post 1", "postId": "1" },
-    { "id": "2", "text": "another comment about post 1", "postId": "1" }
-  ],
-  "profile": {
-    "name": "typicode"
-  }
+  "list": [
+    {
+      "id": "1",
+      "title": "test title 1",
+      "content": "테스트용 내용 입니다.",
+      "createdAt": "35345341"
+    },
+    {
+      "id": "2",
+      "title": "test title 2",
+      "content": "테스트용 내용 입니다.",
+      "createdAt": "35345342"
+    },
+    {
+      "id": "3",
+      "title": "test title 3",
+      "content": "테스트용 내용 입니다.",
+      "createdAt": "35345343"
+    },
+    {
+      "id": "4",
+      "title": "test title 4",
+      "content": "테스트용 내용 입니다.",
+      "createdAt": "35345344"
+    },
+    {
+      "id": "5",
+      "title": "test title 5",
+      "content": "테스트용 내용 입니다.",
+      "createdAt": "35345345"
+    }
+  ]
 }
