@@ -45,7 +45,6 @@ export const createTodo = async (item: TodoForm) => {
   console.log("createTodo호출");
   const newItem: TodoItem = {
     ...item,
-    id: new Date().getTime().toString(),
     createdAt: new Date().getTime().toString(),
     isCompleted: false,
   };

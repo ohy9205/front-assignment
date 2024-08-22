@@ -5,3 +5,5 @@ export type TodoItem = {
   createdAt: string;
   isCompleted: boolean;
 };
+
+export type TodoForm = Pick<TodoItem, "id" | "title" | "content">;
