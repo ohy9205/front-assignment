@@ -7,7 +7,6 @@ type Params = { params: { id: string[] } };
 
 const TodoItem = async ({ params: { id } }: Params) => {
   const result = await getTodo(id[0]);
-  console.log(result);
 
   return (
     <main>

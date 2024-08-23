@@ -17,20 +17,24 @@ type Props = { todo: TodoItem };
 
 const Detail = ({ todo }: Props) => {
   const [isModify, setIsModify] = useState(false);
+  const [msg, setMsg] = useState("");
   const router = useRouter();
 
   const checkHandler = async () => {
     const { result, data } = await toggleCompleteItemServer(todo);
     if (result === "success") {
-      console.log(result);
       router.refresh();
+    } else {
+      setMsg(data);
     }
   };
 
   const deleteHandler = async () => {
-    const res = await deleteTodoServer(todo.id);
-    if (res) {
+    const { result, data } = await deleteTodoServer(todo.id);
+    if (result === "success") {
       router.replace("/todo-list");
+    } else {
+      return data;
     }
   };
 
@@ -44,17 +48,17 @@ const Detail = ({ todo }: Props) => {
 
   const isValidatedForm = (formContent: FormContent) => {
     if (!isModified(formContent)) {
-      console.log("변경된 내용이 없음");
+      setMsg("변경된 내용이 없습니다.");
       return;
     }
 
     if (!formContent.title.trim()) {
-      console.log("제목 빈 상태에서 추가할 수 없음");
+      setMsg("타이틀을 입력하세요.");
       return false;
     }
 
     if (formContent.title.length > 20 || formContent.content.length > 140) {
-      console.log("글자 수 제한");
+      setMsg("제목은 20자, 내용은 140자 이하만 가능합니다.");
       return false;
     }
 
@@ -79,7 +83,8 @@ const Detail = ({ todo }: Props) => {
     if (result === "success") {
       setIsModify(false);
       router.refresh();
-      console.log("수정 후 동작");
+    } else {
+      setMsg(data);
     }
   };
 
@@ -139,6 +144,7 @@ const Detail = ({ todo }: Props) => {
             maxLength={140}
           />
         </fieldset>
+        {msg ? <span className={styles.error}>{msg}</span> : ""}
         <div className={styles.buttonWrapper}>
           <MyButton
             text="previous"

@@ -2,17 +2,17 @@
   "list": [
     {
       "id": "1724399635191",
-      "title": "투두 리스트 작성3",
+      "title": "투두 리스트 작성",
       "content": "투두 리스트를 작성해 보세요",
       "createdAt": "1724399635191",
       "isCompleted": true
     },
     {
       "id": "1724399968824",
-      "title": "1234ㄱㄱ333",
-      "content": "ㅇㅇㅇㅇㄱㄱ3333",
+      "title": "1234ㄱㄱ3332",
+      "content": "ㅇㅇㅇㅇㄱㄱ3333d",
       "createdAt": "1724399968824",
-      "isCompleted": false
+      "isCompleted": true
     }
   ]
 }

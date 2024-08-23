@@ -37,6 +37,7 @@ const TodoDialog = ({
   });
   const [isModifiedState, setIsModifiedState] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [msg, setMsg] = useState("");
 
   const isModified = (newItem: FormContent) => {
     if (
@@ -51,17 +52,17 @@ const TodoDialog = ({
 
   const isValidatedForm = (formContent: FormContent) => {
     if (!isModified(formContent)) {
-      console.log("변경된 내용이 없음");
+      setMsg("변경된 내용이 없음");
       return;
     }
 
     if (!formContent.title.trim()) {
-      console.log("제목 빈 상태에서 추가할 수 없음");
+      setMsg("제목 빈 상태에서 추가할 수 없음");
       return false;
     }
 
     if (formContent.title.length > 20 || formContent.content.length > 140) {
-      console.log("글자 수 제한");
+      setMsg("글자 수 제한");
       return false;
     }
 
@@ -75,7 +76,7 @@ const TodoDialog = ({
     };
 
     if (!isValidatedForm(newData)) {
-      console.log("유효성 검사에 실패함");
+      // console.log("유효성 검사에 실패함");
       return;
     }
 
@@ -84,6 +85,8 @@ const TodoDialog = ({
     } else {
       submitHandler({ ...newData, id });
     }
+
+    setIsDialogOpen(false);
   };
 
   const formChangeHandler = (
@@ -142,7 +145,7 @@ const TodoDialog = ({
             </fieldset>
             <MyButton text="SUBMIT" size="full" />
           </form>
-
+          {msg ? msg : ""}
           {isModifiedState ? (
             <MyAlertDialog
               trigger={

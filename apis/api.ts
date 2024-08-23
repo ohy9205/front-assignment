@@ -67,8 +67,6 @@ export const createTodo = async (item: FormContent): Promise<ResponseData> => {
     },
   });
 
-  console.log(result);
-
   return {
     result: errorMsg ? "fail" : "success",
     data: result ? result : errorMsg,
@@ -89,8 +87,6 @@ export const editTodo = async (
       setErrorMsg("수정에 실패했습니다. 다시 시도해주세요.");
     },
   });
-
-  console.log(result);
 
   return {
     result: errorMsg ? "fail" : "success",

@@ -10,9 +10,10 @@ type Props = {
   trigger: React.ReactNode;
   title: string;
   confirmHandler: () => void;
+  errorMsg?: string;
 };
 
-const MyAlertDialog = ({ trigger, title, confirmHandler }: Props) => {
+const MyAlertDialog = ({ trigger, title, confirmHandler, errorMsg }: Props) => {
   return (
     <AlertDialog.Root>
       <AlertDialog.Trigger asChild>{trigger}</AlertDialog.Trigger>
@@ -23,6 +24,7 @@ const MyAlertDialog = ({ trigger, title, confirmHandler }: Props) => {
             {title}
           </AlertDialog.Title>
           <AlertDialog.Description />
+          {errorMsg ? <div>{errorMsg}</div> : ""}
           <div style={{ display: "flex", gap: 25, justifyContent: "flex-end" }}>
             <AlertDialog.Cancel asChild>
               <MyButton text="cancle" />
