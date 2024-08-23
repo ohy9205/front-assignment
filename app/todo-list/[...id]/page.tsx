@@ -6,12 +6,12 @@ import { Suspense } from "react";
 type Params = { params: { id: string[] } };
 
 const TodoItem = async ({ params: { id } }: Params) => {
-  const todo = await getTodo(id[0]);
+  const result = await getTodo(id[0]);
 
   return (
     <main>
       <Suspense fallback={<LoadingSpinner type="data" />}>
-        {typeof todo === "string" ? todo : <Detail todo={todo} />}
+        {result.result === "fail" ? result.data : <Detail todo={result.data} />}
       </Suspense>
     </main>
   );

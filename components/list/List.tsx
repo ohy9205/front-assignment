@@ -7,7 +7,7 @@ import styles from "./List.module.css";
 
 const List = async () => {
   // await new Promise((resolve) => setTimeout(resolve, 3000));
-  const data = await getList();
+  const res = await getList();
 
   return (
     <div className={styles.list}>
@@ -15,9 +15,11 @@ const List = async () => {
         <TodoDialog trigger={<MyButton text="create" />} header="Create todo" />
       </div>
       <div className={styles.inner}>
-        {typeof data === "string"
-          ? data
-          : data.map((item: TodoItem) => <Item item={item} key={item.id} />)}
+        {res.result === "fail"
+          ? res.data
+          : res.data.map((item: TodoItem) => (
+              <Item item={item} key={item.id} />
+            ))}
       </div>
     </div>
   );
