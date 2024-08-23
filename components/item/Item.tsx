@@ -1,5 +1,5 @@
-import { deleteTodo, toggleCompletItem } from "@/apis/api";
-import { TodoItem } from "@/types/todoItem";
+import { deleteTodo, editTodo, toggleCompleteItem } from "@/apis/api";
+import { FormContent, TodoItem } from "@/types/todoItem";
 import { revalidatePath } from "next/cache";
 import Link from "next/link";
 import Checkbox from "../checkbox/Checkbox";
@@ -15,29 +15,33 @@ type Props = {
 const Item = ({ item }: Props) => {
   const checkHandler = async () => {
     "use server";
-    const res = await toggleCompletItem(item);
-    if (res) {
-      revalidatePath(`/list/${item.id}`);
+    const { result } = await toggleCompleteItem(item);
+    if (result === "success") {
+      revalidatePath(`/list`);
+    } else {
     }
   };
 
-  // const editTodoHandler = async (todo: TodoForm) => {
-  //   "use server";
-  //   const res = await editTodo(todo);
-  //   if (res) {
-  //     revalidatePath(`/list`);
-  //   }
-  // };
-
   const deleteTodoHandler = async () => {
     "use server";
-    const res = await deleteTodo(item.id);
-    if (res) {
+    const { result } = await deleteTodo(item.id);
+    if (result === "success") {
       revalidatePath(`/list`);
     }
   };
 
-  const cancleHandler = () => {};
+  const editHandler = async ({
+    id,
+    title,
+    content,
+  }: FormContent & { id: string }) => {
+    "use server";
+    const { result } = await editTodo(id, { title, content });
+
+    if (result === "success") {
+      revalidatePath(`/list`);
+    }
+  };
 
   return (
     <article
@@ -62,6 +66,7 @@ const Item = ({ item }: Props) => {
             trigger={<MyButton text="update" />}
             initItem={item}
             isModifyMode={true}
+            submitHandler={editHandler}
           />
           <MyAlertDialog
             trigger={<MyButton text="delete" theme="dangerous" />}

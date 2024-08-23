@@ -1,6 +1,5 @@
 "use client";
 
-import { createTodoServer, editTodoServer } from "@/app/actions";
 import { FormContent, TodoItem } from "@/types/todoItem";
 import * as Dialog from "@radix-ui/react-dialog";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -13,6 +12,7 @@ type Props = {
   header: string;
   isModifyMode?: boolean;
   initItem?: TodoItem;
+  submitHandler: (data: any) => void;
 };
 
 const initForm: TodoItem = {
@@ -28,6 +28,7 @@ const TodoDialog = ({
   header,
   initItem = initForm,
   isModifyMode = false,
+  submitHandler,
 }: Props) => {
   const { id, title, content } = initItem;
   const [formState, setFormState] = useState<FormContent>({
@@ -67,7 +68,7 @@ const TodoDialog = ({
     return true;
   };
 
-  const submitHandler = async (formData: FormData) => {
+  const formSubmitHandler = async (formData: FormData) => {
     const newData = {
       title: formData.get("title")?.toString() || "",
       content: formData.get("content")?.toString() || "",
@@ -79,20 +80,9 @@ const TodoDialog = ({
     }
 
     if (!isModifyMode) {
-      const res = await createTodoServer(newData);
-
-      if (res) {
-        console.log("생성 후 동작");
-      }
+      submitHandler(newData);
     } else {
-      const res = await editTodoServer({
-        ...newData,
-        id,
-      });
-
-      if (res) {
-        console.log("수정 후 동작");
-      }
+      submitHandler({ ...newData, id });
     }
   };
 
@@ -129,7 +119,7 @@ const TodoDialog = ({
           <Dialog.Title className={styles.DialogTitle}>{header}</Dialog.Title>
           <Dialog.Description />
 
-          <form action={submitHandler}>
+          <form action={formSubmitHandler}>
             <fieldset className={styles.Fieldset}>
               <input
                 className={styles.Input}

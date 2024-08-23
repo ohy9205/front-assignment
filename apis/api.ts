@@ -1,4 +1,4 @@
-import { TodoForm, TodoItem } from "@/types/todoItem";
+import { FormContent, TodoItem } from "@/types/todoItem";
 import { fetchWithErorHandler } from "@/utils/fetchWithErorHandle";
 
 type ResponseData = Promise<{
@@ -30,7 +30,7 @@ export const getList = async (): Promise<ResponseData> => {
   };
 };
 
-export const toggleCompletItem = async (
+export const toggleCompleteItem = async (
   item: TodoItem
 ): Promise<ResponseData> => {
   const result = await fetchWithErorHandler<TodoItem>({
@@ -50,12 +50,40 @@ export const toggleCompletItem = async (
   };
 };
 
-export const editTodo = async (item: TodoForm): Promise<ResponseData> => {
+export const createTodo = async (item: FormContent): Promise<ResponseData> => {
   const result = await fetchWithErorHandler<TodoItem>({
-    url: `${BASE_URL}/list/${item.id}`,
+    url: `${BASE_URL}/list`,
+    options: {
+      method: "POST",
+      body: JSON.stringify({
+        ...item,
+        id: new Date().getTime().toString(),
+        createdAt: new Date().getTime().toString(),
+        isCompleted: false,
+      }),
+    },
+    errorHandler: () => {
+      setErrorMsg("수정에 실패했습니다. 다시 시도해주세요.");
+    },
+  });
+
+  console.log(result);
+
+  return {
+    result: errorMsg ? "fail" : "success",
+    data: result ? result : errorMsg,
+  };
+};
+
+export const editTodo = async (
+  id: string,
+  newData: FormContent
+): Promise<ResponseData> => {
+  const result = await fetchWithErorHandler<TodoItem>({
+    url: `${BASE_URL}/list/${id}`,
     options: {
       method: "PATCH",
-      body: JSON.stringify(item),
+      body: JSON.stringify(newData),
     },
     errorHandler: () => {
       setErrorMsg("수정에 실패했습니다. 다시 시도해주세요.");

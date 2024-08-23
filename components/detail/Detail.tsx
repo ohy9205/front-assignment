@@ -3,7 +3,7 @@
 import {
   deleteTodoServer,
   editTodoServer,
-  toggleCompletItemServer,
+  toggleCompleteItemServer,
 } from "@/app/actions";
 import { FormContent, TodoItem } from "@/types/todoItem";
 import { useRouter } from "next/navigation";
@@ -20,7 +20,7 @@ const Detail = ({ todo }: Props) => {
   const router = useRouter();
 
   const checkHandler = async () => {
-    const res = await toggleCompletItemServer(todo);
+    const res = await toggleCompleteItemServer(todo);
     if (res) {
       // revalidatePath(`/list/${item.id}`);
       // 토글 후 동작
@@ -72,9 +72,8 @@ const Detail = ({ todo }: Props) => {
       return;
     }
 
-    const res = await editTodoServer({
+    const res = await editTodoServer(todo.id, {
       ...newData,
-      id: todo.id,
     });
 
     if (res) {

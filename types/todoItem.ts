@@ -6,6 +6,4 @@ export type TodoItem = {
   isCompleted: boolean;
 };
 
-export type TodoForm = Pick<TodoItem, "id" | "title" | "content">;
-
 export type FormContent = Pick<TodoItem, "title" | "content">;

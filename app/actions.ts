@@ -4,16 +4,12 @@ import {
   createTodo,
   deleteTodo,
   editTodo,
-  toggleCompletItem,
+  toggleCompleteItem,
 } from "@/apis/api";
-import { FormContent, TodoForm, TodoItem } from "@/types/todoItem";
+import { FormContent, TodoItem } from "@/types/todoItem";
 
-export const toggleCompletItemServer = async (item: TodoItem) => {
-  return toggleCompletItem(item);
-};
-
-export const editTodoServer = async (todo: TodoForm) => {
-  return await editTodo(todo);
+export const editTodoServer = async (id: string, todo: FormContent) => {
+  return await editTodo(id, todo);
 };
 
 export const deleteTodoServer = async (id: string) => {
@@ -25,5 +21,5 @@ export const createTodoServer = async (item: FormContent) => {
 };
 
 export const toggleCompleteItemServer = async (todo: TodoItem) => {
-  return await toggleCompletItem(todo);
+  return await toggleCompleteItem(todo);
 };
