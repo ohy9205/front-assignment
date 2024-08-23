@@ -1,4 +1,7 @@
-import { TodoForm } from "@/types/todoItem";
+"use client";
+
+import { createTodoServer, editTodoServer } from "@/app/actions";
+import { FormContent, TodoItem } from "@/types/todoItem";
 import * as Dialog from "@radix-ui/react-dialog";
 import MyButton from "../myButton/MyButton";
 import styles from "./TodoDialog.module.css";
@@ -6,45 +9,48 @@ import styles from "./TodoDialog.module.css";
 type Props = {
   trigger: React.ReactNode;
   header: string;
-  initItem?: TodoForm;
-  submitHandler: (todo: TodoForm) => void;
-  cancleHandler?: () => void;
+  isModifyMode?: boolean;
+  initItem?: TodoItem;
 };
 
-const initForm: TodoForm = { id: "", title: "", content: "" };
+const initForm: TodoItem = {
+  id: "",
+  title: "",
+  content: "",
+  createdAt: "",
+  isCompleted: false,
+};
 
 const TodoDialog = ({
   trigger,
   header,
   initItem = initForm,
-  submitHandler,
-  cancleHandler,
+  isModifyMode = false,
 }: Props) => {
   const { id, title, content } = initItem;
-
-  const isModified = async (initItem: TodoForm, newItem: TodoForm) => {
-    "use server";
-
-    if (JSON.stringify(initItem) === JSON.stringify(newItem)) {
+  const isModified = (newItem: FormContent) => {
+    if (
+      initItem.title === newItem.title &&
+      initItem.content === newItem.content
+    ) {
       return false;
     }
+
     return true;
   };
 
-  const isValidated = async (todo: TodoForm) => {
-    "use server";
-
-    if (!(await isModified(initItem, todo))) {
+  const isValidatedForm = (formContent: FormContent) => {
+    if (!isModified(formContent)) {
       console.log("변경된 내용이 없음");
       return;
     }
 
-    if (!todo.title.trim()) {
+    if (!formContent.title.trim()) {
       console.log("제목 빈 상태에서 추가할 수 없음");
       return false;
     }
 
-    if (todo.title.length > 20 || todo.content.length > 140) {
+    if (formContent.title.length > 20 || formContent.content.length > 140) {
       console.log("글자 수 제한");
       return false;
     }
@@ -52,21 +58,33 @@ const TodoDialog = ({
     return true;
   };
 
-  const submit = async (formData: FormData) => {
-    "use server";
-
+  const submitHandler = async (formData: FormData) => {
     const newData = {
-      id: id ? id : new Date().getTime().toString(),
       title: formData.get("title")?.toString() || "",
       content: formData.get("content")?.toString() || "",
     };
 
-    if (!(await isValidated(newData))) {
+    if (!isValidatedForm(newData)) {
       console.log("유효성 검사에 실패함");
       return;
     }
 
-    submitHandler(newData);
+    if (!isModifyMode) {
+      const res = await createTodoServer(newData);
+
+      if (res) {
+        console.log("생성 후 동작");
+      }
+    } else {
+      const res = await editTodoServer({
+        ...newData,
+        id,
+      });
+
+      if (res) {
+        console.log("수정 후 동작");
+      }
+    }
   };
 
   return (
@@ -76,8 +94,9 @@ const TodoDialog = ({
         <Dialog.Overlay className={styles.DialogOverlay} />
         <Dialog.Content className={styles.DialogContent}>
           <Dialog.Title className={styles.DialogTitle}>{header}</Dialog.Title>
+          <Dialog.Description />
 
-          <form action={submit}>
+          <form action={submitHandler}>
             <fieldset className={styles.Fieldset}>
               <input
                 className={styles.Input}
@@ -102,7 +121,8 @@ const TodoDialog = ({
             <button
               className="IconButton"
               aria-label="Close"
-              onClick={cancleHandler}>
+              // onClick={cancleHandler}
+            >
               ✖️
             </button>
           </Dialog.Close>

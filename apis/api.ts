@@ -1,4 +1,4 @@
-import { TodoForm, TodoItem } from "@/types/todoItem";
+import { FormContent, TodoForm, TodoItem } from "@/types/todoItem";
 import { fetchWithErorHandler } from "@/utils/fetchWithErorHandle";
 
 const BASE_URL = "http://localhost:4000";
@@ -11,7 +11,7 @@ export const getList = async () => {
   };
 
   const list = (await fetchWithErorHandler<TodoItem[]>({
-    url: BASE_URL + "/list",
+    url: BASE_URL + "/list?_sort=createdAt&_order=desc",
     errorHandler: () => {
       setErrorMsg();
     },
@@ -21,6 +21,7 @@ export const getList = async () => {
     setErrorMsg();
   }
 
+  // console.log(list);
   return errorMsg ? errorMsg : list;
 };
 
@@ -39,9 +40,10 @@ export const toggleCompletItem = async (item: TodoItem) => {
   return result ? result : item;
 };
 
-export const createTodo = async (item: TodoForm) => {
+export const createTodo = async (item: FormContent) => {
   const newItem: TodoItem = {
     ...item,
+    id: new Date().getTime().toString(),
     createdAt: new Date().getTime().toString(),
     isCompleted: false,
   };
@@ -71,6 +73,8 @@ export const editTodo = async (item: TodoForm) => {
       alert("수정에 실패했습니다. 다시 시도해주세요.");
     },
   });
+
+  console.log(result);
 
   return result;
 };

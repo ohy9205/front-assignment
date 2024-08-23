@@ -1,8 +1,11 @@
 "use client";
 
-import { editTodo } from "@/apis/api";
-import { check, remove } from "@/app/actions";
-import { TodoForm, TodoItem } from "@/types/todoItem";
+import {
+  deleteTodoServer,
+  editTodoServer,
+  toggleCompletItemServer,
+} from "@/app/actions";
+import { FormContent, TodoItem } from "@/types/todoItem";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Checkbox from "../checkbox/Checkbox";
@@ -17,35 +20,40 @@ const Detail = ({ todo }: Props) => {
   const router = useRouter();
 
   const checkHandler = async () => {
-    await check(todo);
+    const res = await toggleCompletItemServer(todo);
+    if (res) {
+      // revalidatePath(`/list/${item.id}`);
+      // 토글 후 동작
+    }
   };
 
   const deleteHandler = async () => {
-    const res = await remove(todo.id);
+    const res = await deleteTodoServer(todo.id);
     if (res) {
       router.replace("/todo-list");
     }
   };
 
-  const isModified = async (initItem: TodoForm, newItem: TodoForm) => {
-    if (JSON.stringify(initItem) === JSON.stringify(newItem)) {
+  const isModified = (newItem: FormContent) => {
+    if (todo.title === newItem.title && todo.content === newItem.content) {
       return false;
     }
+
     return true;
   };
 
-  const isValidated = async (updatedTodo: TodoForm) => {
-    if (!(await isModified(todo, updatedTodo))) {
+  const isValidatedForm = (formContent: FormContent) => {
+    if (!isModified(formContent)) {
       console.log("변경된 내용이 없음");
       return;
     }
 
-    if (!todo.title.trim()) {
+    if (!formContent.title.trim()) {
       console.log("제목 빈 상태에서 추가할 수 없음");
       return false;
     }
 
-    if (todo.title.length > 20 || todo.content.length > 140) {
+    if (formContent.title.length > 20 || formContent.content.length > 140) {
       console.log("글자 수 제한");
       return false;
     }
@@ -53,21 +61,24 @@ const Detail = ({ todo }: Props) => {
     return true;
   };
 
-  const submit = async (formData: FormData) => {
+  const submitHandler = async (formData: FormData) => {
     const newData = {
-      id: todo.id,
       title: formData.get("title")?.toString() || "",
       content: formData.get("content")?.toString() || "",
     };
 
-    if (!(await isValidated(newData))) {
+    if (!isValidatedForm(newData)) {
       console.log("유효성 검사에 실패함");
       return;
     }
 
-    const res = await editTodo(newData);
+    const res = await editTodoServer({
+      ...newData,
+      id: todo.id,
+    });
+
     if (res) {
-      closeModifyHandler();
+      console.log("수정 후 동작");
     }
   };
 
@@ -109,7 +120,7 @@ const Detail = ({ todo }: Props) => {
         styles.detail,
         todo.isCompleted ? styles.completed : "",
       ].join()}>
-      <form action={submit}>
+      <form action={submitHandler}>
         <fieldset className={styles.Fieldset}>
           <input
             className={styles.Input}

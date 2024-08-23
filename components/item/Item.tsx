@@ -1,5 +1,5 @@
-import { deleteTodo, editTodo, toggleCompletItem } from "@/apis/api";
-import { TodoForm, TodoItem } from "@/types/todoItem";
+import { deleteTodo, toggleCompletItem } from "@/apis/api";
+import { TodoItem } from "@/types/todoItem";
 import { revalidatePath } from "next/cache";
 import Link from "next/link";
 import Checkbox from "../checkbox/Checkbox";
@@ -21,13 +21,13 @@ const Item = ({ item }: Props) => {
     }
   };
 
-  const editTodoHandler = async (todo: TodoForm) => {
-    "use server";
-    const res = await editTodo(todo);
-    if (res) {
-      revalidatePath(`/list`);
-    }
-  };
+  // const editTodoHandler = async (todo: TodoForm) => {
+  //   "use server";
+  //   const res = await editTodo(todo);
+  //   if (res) {
+  //     revalidatePath(`/list`);
+  //   }
+  // };
 
   const deleteTodoHandler = async () => {
     "use server";
@@ -36,6 +36,8 @@ const Item = ({ item }: Props) => {
       revalidatePath(`/list`);
     }
   };
+
+  const cancleHandler = () => {};
 
   return (
     <article
@@ -58,9 +60,8 @@ const Item = ({ item }: Props) => {
           <TodoDialog
             header="Update todo"
             trigger={<MyButton text="update" />}
-            initItem={{ id: item.id, title: item.title, content: item.content }}
-            submitHandler={editTodoHandler}
-            // cancleHandler={}
+            initItem={item}
+            isModifyMode={true}
           />
           <MyAlertDialog
             trigger={<MyButton text="delete" theme="dangerous" />}
