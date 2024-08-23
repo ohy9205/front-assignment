@@ -12,13 +12,14 @@ type Props = {
   item: TodoItem;
 };
 
-const Item = ({ item }: Props) => {
+const Item = async ({ item }: Props) => {
+  await new Promise((resolve) => setTimeout(resolve, 3000));
   const checkHandler = async () => {
     "use server";
+
     const { result } = await toggleCompleteItem(item);
     if (result === "success") {
       revalidatePath(`/list`);
-    } else {
     }
   };
 

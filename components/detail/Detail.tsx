@@ -20,10 +20,10 @@ const Detail = ({ todo }: Props) => {
   const router = useRouter();
 
   const checkHandler = async () => {
-    const res = await toggleCompleteItemServer(todo);
-    if (res) {
-      // revalidatePath(`/list/${item.id}`);
-      // 토글 후 동작
+    const { result, data } = await toggleCompleteItemServer(todo);
+    if (result === "success") {
+      console.log(result);
+      router.refresh();
     }
   };
 
@@ -72,11 +72,13 @@ const Detail = ({ todo }: Props) => {
       return;
     }
 
-    const res = await editTodoServer(todo.id, {
+    const { result, data } = await editTodoServer(todo.id, {
       ...newData,
     });
 
-    if (res) {
+    if (result === "success") {
+      setIsModify(false);
+      router.refresh();
       console.log("수정 후 동작");
     }
   };
@@ -87,10 +89,9 @@ const Detail = ({ todo }: Props) => {
 
   return !isModify ? (
     <div
-      className={[
-        styles.detail,
-        todo.isCompleted ? styles.completed : "",
-      ].join()}>
+      className={[styles.detail, todo.isCompleted ? styles.completed : ""].join(
+        " "
+      )}>
       <header className={styles.header}>
         <div className={styles.titleWrapper}>
           <Checkbox

@@ -18,9 +18,9 @@ const setErrorMsg = (msg: string) => {
 
 export const getList = async (): Promise<ResponseData> => {
   const result = (await fetchWithErorHandler<TodoItem[]>({
-    url: BASE_URL + "/list?_sort=createdAt&_order=desc",
+    url: BASE_URL + "/list",
     errorHandler: () => {
-      setErrorMsg("리스트를 불러오지 못했어요.");
+      setErrorMsg("리스트를 불러오지 못했어요. 잠시 후 다시 시도해 주세요");
     },
   })) as TodoItem[];
 

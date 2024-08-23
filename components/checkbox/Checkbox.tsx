@@ -15,8 +15,8 @@ const Checkbox = ({ checked = false, value, checkHandler }: Props) => {
         type="checkbox"
         className={styles.input}
         id={value}
-        defaultChecked={checked}
-        onClick={() => checkHandler()}
+        checked={checked}
+        onChange={() => checkHandler()}
       />
       <span className={styles.span} onClick={() => checkHandler()}></span>
     </>
