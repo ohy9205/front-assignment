@@ -1,10 +1,10 @@
 import { FormContent, TodoItem } from "@/types/todoItem";
 import { fetchWithErorHandler } from "@/utils/fetchWithErorHandle";
 
-type ResponseData = Promise<{
+export type ResponseData = {
   result: Result;
   data: any;
-}>;
+};
 
 type Result = "success" | "fail";
 
@@ -63,10 +63,11 @@ export const createTodo = async (item: FormContent): Promise<ResponseData> => {
       }),
     },
     errorHandler: () => {
-      setErrorMsg("수정에 실패했습니다. 다시 시도해주세요.");
+      setErrorMsg("생성에 실패했습니다. 다시 시도해주세요.");
     },
   });
 
+  console.log(result);
   return {
     result: errorMsg ? "fail" : "success",
     data: result ? result : errorMsg,

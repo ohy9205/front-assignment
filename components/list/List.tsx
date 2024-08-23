@@ -15,11 +15,12 @@ const List = async () => {
   const createHandler = async (newData: FormContent) => {
     "use server";
 
-    const { result, data } = await createTodo(newData);
+    const rs = await createTodo(newData);
 
-    if (result === "success") {
+    if (rs.result === "success") {
       revalidatePath("/list");
     }
+    return rs;
   };
 
   return (

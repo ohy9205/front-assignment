@@ -35,6 +35,10 @@
   text-decoration: line-through;
 }
 
+.emptyContent {
+  color: #ccc;
+}
+
 /* 수정모드 */
 
 .Fieldset {

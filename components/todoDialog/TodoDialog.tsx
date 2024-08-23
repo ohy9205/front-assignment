@@ -1,8 +1,10 @@
 "use client";
 
-import { FormContent, TodoItem } from "@/types/todoItem";
+import { ResponseData } from "@/apis/api";
+import { useTodoForm } from "@/hooks/useTodo";
+import { TodoItem } from "@/types/todoItem";
 import * as Dialog from "@radix-ui/react-dialog";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useState } from "react";
 import MyAlertDialog from "../myAlertDialog/MyAlertDialog";
 import MyButton from "../myButton/MyButton";
 import styles from "./TodoDialog.module.css";
@@ -12,7 +14,7 @@ type Props = {
   header: string;
   isModifyMode?: boolean;
   initItem?: TodoItem;
-  submitHandler: (data: any) => void;
+  submitHandler: (data: any) => Promise<ResponseData>;
 };
 
 const initForm: TodoItem = {
@@ -27,91 +29,20 @@ const TodoDialog = ({
   trigger,
   header,
   initItem = initForm,
-  isModifyMode = false,
   submitHandler,
 }: Props) => {
-  const { id, title, content } = initItem;
-  const [formState, setFormState] = useState<FormContent>({
-    title: initItem.title,
-    content: initItem.content,
-  });
-  const [isModifiedState, setIsModifiedState] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [msg, setMsg] = useState("");
-
-  const isModified = (newItem: FormContent) => {
-    if (
-      initItem.title === newItem.title &&
-      initItem.content === newItem.content
-    ) {
-      return false;
-    }
-
-    return true;
-  };
-
-  const isValidatedForm = (formContent: FormContent) => {
-    if (!isModified(formContent)) {
-      setMsg("변경된 내용이 없음");
-      return;
-    }
-
-    if (!formContent.title.trim()) {
-      setMsg("제목 빈 상태에서 추가할 수 없음");
-      return false;
-    }
-
-    if (formContent.title.length > 20 || formContent.content.length > 140) {
-      setMsg("글자 수 제한");
-      return false;
-    }
-
-    return true;
-  };
-
-  const formSubmitHandler = async (formData: FormData) => {
-    const newData = {
-      title: formData.get("title")?.toString() || "",
-      content: formData.get("content")?.toString() || "",
-    };
-
-    if (!isValidatedForm(newData)) {
-      // console.log("유효성 검사에 실패함");
-      return;
-    }
-
-    if (!isModifyMode) {
-      submitHandler(newData);
-    } else {
-      submitHandler({ ...newData, id });
-    }
-
-    setIsDialogOpen(false);
-  };
-
-  const formChangeHandler = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-
-    setFormState((prev) => ({ ...prev, [name]: value }));
-  };
+  const {
+    form: { title, content },
+    isModifiedState,
+    errorMsg,
+    formSubmitHandler,
+    formChangeHandler,
+  } = useTodoForm(initItem, submitHandler);
 
   const dialogOpenHandler = (open: boolean) => {
     setIsDialogOpen(open);
-    setFormState({
-      title: initItem.title,
-      content: initItem.content,
-    });
   };
-
-  useEffect(() => {
-    if (isModified(formState)) {
-      setIsModifiedState(true);
-    } else {
-      setIsModifiedState(false);
-    }
-  }, [formState]);
 
   return (
     <Dialog.Root open={isDialogOpen} onOpenChange={dialogOpenHandler}>
@@ -145,7 +76,7 @@ const TodoDialog = ({
             </fieldset>
             <MyButton text="SUBMIT" size="full" />
           </form>
-          {msg ? msg : ""}
+          {errorMsg ? <div>{errorMsg}</div> : ""}
           {isModifiedState ? (
             <MyAlertDialog
               trigger={

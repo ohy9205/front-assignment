@@ -37,11 +37,12 @@ const Item = async ({ item }: Props) => {
     content,
   }: FormContent & { id: string }) => {
     "use server";
-    const { result } = await editTodo(id, { title, content });
+    const rs = await editTodo(id, { title, content });
 
-    if (result === "success") {
+    if (rs.result === "success") {
       revalidatePath(`/list`);
     }
+    return rs;
   };
 
   return (

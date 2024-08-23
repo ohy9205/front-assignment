@@ -5,6 +5,7 @@ import {
   editTodoServer,
   toggleCompleteItemServer,
 } from "@/app/actions";
+import { useTodoForm } from "@/hooks/useTodo";
 import { FormContent, TodoItem } from "@/types/todoItem";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -25,7 +26,7 @@ const Detail = ({ todo }: Props) => {
     if (result === "success") {
       router.refresh();
     } else {
-      setMsg(data);
+      return data;
     }
   };
 
@@ -38,59 +39,25 @@ const Detail = ({ todo }: Props) => {
     }
   };
 
-  const isModified = (newItem: FormContent) => {
-    if (todo.title === newItem.title && todo.content === newItem.content) {
-      return false;
-    }
-
-    return true;
-  };
-
-  const isValidatedForm = (formContent: FormContent) => {
-    if (!isModified(formContent)) {
-      setMsg("변경된 내용이 없습니다.");
-      return;
-    }
-
-    if (!formContent.title.trim()) {
-      setMsg("타이틀을 입력하세요.");
-      return false;
-    }
-
-    if (formContent.title.length > 20 || formContent.content.length > 140) {
-      setMsg("제목은 20자, 내용은 140자 이하만 가능합니다.");
-      return false;
-    }
-
-    return true;
-  };
-
-  const submitHandler = async (formData: FormData) => {
-    const newData = {
-      title: formData.get("title")?.toString() || "",
-      content: formData.get("content")?.toString() || "",
-    };
-
-    if (!isValidatedForm(newData)) {
-      console.log("유효성 검사에 실패함");
-      return;
-    }
-
-    const { result, data } = await editTodoServer(todo.id, {
-      ...newData,
-    });
-
-    if (result === "success") {
-      setIsModify(false);
-      router.refresh();
-    } else {
-      setMsg(data);
-    }
-  };
-
   const closeModifyHandler = () => {
     setIsModify(false);
   };
+
+  const editHandler = async ({
+    id,
+    title,
+    content,
+  }: FormContent & { id: string }) => {
+    const rs = await editTodoServer(id, { title, content });
+
+    if (rs.result === "success") {
+      setIsModify(false);
+      router.refresh();
+    }
+    return rs;
+  };
+
+  const { formSubmitHandler, errorMsg } = useTodoForm(todo, editHandler);
 
   return !isModify ? (
     <div
@@ -117,7 +84,13 @@ const Detail = ({ todo }: Props) => {
           />
         </div>
       </header>
-      <div>{todo.content}</div>
+      <div>
+        {todo.content ? (
+          todo.content
+        ) : (
+          <span className={styles.emptyContent}>상세 내용이 없습니다.</span>
+        )}
+      </div>
     </div>
   ) : (
     <div
@@ -125,7 +98,7 @@ const Detail = ({ todo }: Props) => {
         styles.detail,
         todo.isCompleted ? styles.completed : "",
       ].join()}>
-      <form action={submitHandler}>
+      <form action={formSubmitHandler}>
         <fieldset className={styles.Fieldset}>
           <input
             className={styles.Input}
@@ -144,7 +117,7 @@ const Detail = ({ todo }: Props) => {
             maxLength={140}
           />
         </fieldset>
-        {msg ? <span className={styles.error}>{msg}</span> : ""}
+        {errorMsg ? <span className={styles.error}>{errorMsg}</span> : ""}
         <div className={styles.buttonWrapper}>
           <MyButton
             text="previous"
