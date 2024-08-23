@@ -42,3 +42,13 @@
 .article.completed .content {
   text-decoration: line-through;
 }
+
+@media (max-width: 600px) {
+  .header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: baseline;
+    gap: 8px;
+  }
+}

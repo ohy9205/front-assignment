@@ -80,3 +80,13 @@
 .textarea::placeholder {
   color: #bbb;
 }
+
+@media (max-width: 600px) {
+  .header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: baseline;
+    gap: 8px;
+  }
+}
