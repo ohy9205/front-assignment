@@ -80,7 +80,7 @@ const TodoDialog = ({
           {isModifiedState ? (
             <MyAlertDialog
               trigger={
-                <button className="IconButton" aria-label="Close">
+                <button className={styles.IconButton} aria-label="Close">
                   ✖️
                 </button>
               }
@@ -89,7 +89,7 @@ const TodoDialog = ({
             />
           ) : (
             <Dialog.Close asChild>
-              <button className="IconButton" aria-label="Close">
+              <button className={styles.IconButton} aria-label="Close">
                 ✖️
               </button>
             </Dialog.Close>
