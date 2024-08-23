@@ -3,6 +3,8 @@
 import { createTodoServer, editTodoServer } from "@/app/actions";
 import { FormContent, TodoItem } from "@/types/todoItem";
 import * as Dialog from "@radix-ui/react-dialog";
+import { ChangeEvent, useEffect, useState } from "react";
+import MyAlertDialog from "../myAlertDialog/MyAlertDialog";
 import MyButton from "../myButton/MyButton";
 import styles from "./TodoDialog.module.css";
 
@@ -28,6 +30,13 @@ const TodoDialog = ({
   isModifyMode = false,
 }: Props) => {
   const { id, title, content } = initItem;
+  const [formState, setFormState] = useState<FormContent>({
+    title: initItem.title,
+    content: initItem.content,
+  });
+  const [isModifiedState, setIsModifiedState] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   const isModified = (newItem: FormContent) => {
     if (
       initItem.title === newItem.title &&
@@ -87,8 +96,32 @@ const TodoDialog = ({
     }
   };
 
+  const formChangeHandler = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+
+    setFormState((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const dialogOpenHandler = (open: boolean) => {
+    setIsDialogOpen(open);
+    setFormState({
+      title: initItem.title,
+      content: initItem.content,
+    });
+  };
+
+  useEffect(() => {
+    if (isModified(formState)) {
+      setIsModifiedState(true);
+    } else {
+      setIsModifiedState(false);
+    }
+  }, [formState]);
+
   return (
-    <Dialog.Root>
+    <Dialog.Root open={isDialogOpen} onOpenChange={dialogOpenHandler}>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className={styles.DialogOverlay} />
@@ -104,6 +137,7 @@ const TodoDialog = ({
                 placeholder="todo-list 구현하기"
                 defaultValue={title}
                 maxLength={30}
+                onChange={formChangeHandler}
               />
             </fieldset>
             <fieldset className={styles.Fieldset}>
@@ -113,19 +147,29 @@ const TodoDialog = ({
                 placeholder="8/23까지 todo-list 구현하고 제출하기"
                 defaultValue={content}
                 maxLength={140}
+                onChange={formChangeHandler}
               />
             </fieldset>
             <MyButton text="SUBMIT" size="full" />
           </form>
-          <Dialog.Close asChild>
-            <button
-              className="IconButton"
-              aria-label="Close"
-              // onClick={cancleHandler}
-            >
-              ✖️
-            </button>
-          </Dialog.Close>
+
+          {isModifiedState ? (
+            <MyAlertDialog
+              trigger={
+                <button className="IconButton" aria-label="Close">
+                  ✖️
+                </button>
+              }
+              confirmHandler={() => setIsDialogOpen(false)}
+              title="변경된 내용이 있습니다. 수정을 취소할까요?"
+            />
+          ) : (
+            <Dialog.Close asChild>
+              <button className="IconButton" aria-label="Close">
+                ✖️
+              </button>
+            </Dialog.Close>
+          )}
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

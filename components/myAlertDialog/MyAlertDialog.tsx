@@ -22,6 +22,7 @@ const MyAlertDialog = ({ trigger, title, confirmHandler }: Props) => {
           <AlertDialog.Title className={styles.AlertDialogTitle}>
             {title}
           </AlertDialog.Title>
+          <AlertDialog.Description />
           <div style={{ display: "flex", gap: 25, justifyContent: "flex-end" }}>
             <AlertDialog.Cancel asChild>
               <MyButton text="cancle" />
